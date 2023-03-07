@@ -44,11 +44,10 @@ function AddAutoForm(){
       event.preventDefault();
 
       const data={}
-
       data.color = color;
       data.year = year;
       data.vin = vin;
-      data.model = model;
+      data.model_id = model;
 
       const AutomobileUrl = `http://localhost:8100/api/automobiles/`;
       const fetchConfig = {
@@ -62,7 +61,7 @@ function AddAutoForm(){
       const response = await fetch(AutomobileUrl, fetchConfig);
       if (response.ok) {
         const newAutomobile = await response.json();
-        console.log(newAutomobile)
+        console.log(newAutomobile);
 
         setColor('');
         setYear('');
@@ -101,7 +100,7 @@ return(
                   <option value="">Choose a Model</option>
                   {models.map(model => {
                                     return (
-                                        <option key={model.id} value={model.id}>{model.name}</option>
+                                        <option key={model.href} value={model.id}>{model.name}</option>
                                     )
                                 })}
                 </select>

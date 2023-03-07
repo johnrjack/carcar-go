@@ -22,7 +22,7 @@ return(
     <>
     <h1>Manufacturers</h1>
     <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-            <NavLink to="/automobiles/new" className="btn btn-primary btn-lg px-4 gap-3">Add New Manufacturer</NavLink>
+            <NavLink to="/manufacturer/new" className="btn btn-primary btn-lg px-4 gap-3">Add New Manufacturer</NavLink>
         </div>
     <table className="table table-striped">
         <thead>
