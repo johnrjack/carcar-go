@@ -2,8 +2,8 @@
 
 Team:
 
-* Person 1 - Which microservice?
-* Person 2 - Which microservice?
+* John Jackson - Sales 
+* Rodrigo Olmos - Service 
 
 ## Design
 
@@ -14,5 +14,8 @@ microservice, here.
 
 ## Sales microservice
 
-Explain your models and integration with the inventory
-microservice, here.
+How to run: 
+    docker volume create beta-data
+    docker-compose build
+    docker-compose up
+
