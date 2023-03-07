@@ -30,4 +30,3 @@ class ServiceAppointment(models.Model):
         on_delete=models.PROTECT,
     )
     #customer foreign
-    #technician foreign
