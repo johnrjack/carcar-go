@@ -3,7 +3,7 @@ from django.views.decorators.http import require_http_methods
 import json
 
 from .models import SalesPerson
-from encoders import  SalePersonEncoder
+from .encoders import  SalePersonEncoder
 
 # Create your views here.
 
