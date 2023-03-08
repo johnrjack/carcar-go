@@ -22,6 +22,7 @@ class Technician(models.Model):
 
 class ServiceAppointment(models.Model):
     vin = models.CharField(max_length=16)
+    customer = models.CharField(max_length=100)
     date = models.DateField()
     reason = models.CharField(max_length=300)
     technician = models.ForeignKey(
@@ -29,4 +30,3 @@ class ServiceAppointment(models.Model):
         related_name="tech",
         on_delete=models.PROTECT,
     )
-    #customer foreign
