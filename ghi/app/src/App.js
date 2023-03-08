@@ -10,6 +10,7 @@ import AddModelForm from './ModelForm';
 import SalesPersonForm from './SalesPersonForm';
 import CustomerForm from './CustomerForm';
 import SalesRecordForm from './SalesRecordForm';
+import SaleList from './SaleList';
 
 
 function App() {
@@ -39,6 +40,9 @@ function App() {
             </Route>
             <Route path="sales-record">
               <Route path="" element={<SalesRecordForm/>}/>
+            </Route>
+            <Route path="sales-list-all">
+              <Route path="" element={<SaleList/>}/>
             </Route>
             
         </Routes>
