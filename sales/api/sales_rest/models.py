@@ -54,4 +54,4 @@ class Sale(models.Model):
         return self.automobile
     
     def get_api_url(self):
-        return reverse("api_create_sale", kwargs={"pk": self.pk})
+        return reverse("api_show_sale", kwargs={"pk": self.pk})
