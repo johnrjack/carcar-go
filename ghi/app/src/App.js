@@ -5,6 +5,8 @@ import AutoList from './AutoList'
 import AddAutoForm from './NewAutoForm';
 import ManufacturerList from './ManufacturerList';
 import ManufacturerForm from './ManufacturerForm';
+import ModelList from './ModelList';
+import AddModelForm from './ModelForm';
 
 function App() {
   return (
@@ -20,6 +22,10 @@ function App() {
             <Route path="manufacturer">
               <Route path="" element={<ManufacturerList/>}/>
               <Route path="new" element={<ManufacturerForm/>} />
+            </Route>
+            <Route path="models">
+              <Route path="" element={<ModelList/>}/>
+              <Route path="new" element={<AddModelForm/>}/>
             </Route>
         </Routes>
       </div>
