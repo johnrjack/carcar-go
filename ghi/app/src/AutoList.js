@@ -13,6 +13,7 @@ function AutoList(){
             setAutos(data.autos)
         }
     }
+    
     useEffect(() => {
         fetchData()
     }, []);

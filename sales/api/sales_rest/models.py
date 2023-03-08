@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class AutomobileVO(models.Model):
     import_href = models.CharField(max_length=200, unique=True, null=True)
@@ -8,7 +9,7 @@ class AutomobileVO(models.Model):
 
 
     def __str__(self):
-        return self.model
+        return self.vin
 
 
 class SalesPerson(models.Model):
@@ -29,6 +30,8 @@ class Customer(models.Model):
     
 
 class Sale(models.Model):
+    price = models.IntegerField()
+    
     automobile = models.ForeignKey(
         AutomobileVO,
         related_name="automobile",
@@ -45,7 +48,10 @@ class Sale(models.Model):
         related_name="customer",
         on_delete=models.CASCADE
     )
-    price = models.IntegerField()
+    
 
     def __str__(self):
         return self.automobile
+    
+    def get_api_url(self):
+        return reverse("api_create_sale", kwargs={"pk": self.pk})
