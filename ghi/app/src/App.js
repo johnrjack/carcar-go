@@ -9,6 +9,8 @@ import ModelList from './ModelList';
 import AddModelForm from './ModelForm';
 import SalesPersonForm from './SalesPersonForm';
 import CustomerForm from './CustomerForm';
+import SalesRecordForm from './SalesRecordForm';
+
 
 function App() {
   return (
@@ -29,11 +31,14 @@ function App() {
               <Route path="" element={<ModelList/>}/>
               <Route path="new" element={<AddModelForm/>}/>
             </Route>
-            <Route path="sales-person">
+            <Route path="sales-team">
               <Route path="" element={<SalesPersonForm/>}/>
             </Route>
             <Route path="customer">
               <Route path="" element={<CustomerForm/>}/>
+            </Route>
+            <Route path="sales-record">
+              <Route path="" element={<SalesRecordForm/>}/>
             </Route>
             
         </Routes>

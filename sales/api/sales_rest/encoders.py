@@ -12,11 +12,13 @@ class VOAutomobileEncoder(ModelEncoder):
         "year",
         "vin",
         "import_href",
+
     ]
 
 class SalePersonEncoder(ModelEncoder):
     model = SalesPerson
     properties = [
+        "id",
         "employee_name",
         "employee_number",
     ]
@@ -25,6 +27,7 @@ class SalePersonEncoder(ModelEncoder):
 class CustomerEncoder(ModelEncoder):
     model = Customer
     properties = [
+        'id',
         "customer_name",
         "address",
         "phone_number",
