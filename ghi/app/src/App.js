@@ -7,6 +7,12 @@ import ManufacturerList from './ManufacturerList';
 import ManufacturerForm from './ManufacturerForm';
 import ModelList from './ModelList';
 import AddModelForm from './ModelForm';
+import SalesPersonForm from './SalesPersonForm';
+import CustomerForm from './CustomerForm';
+import SalesRecordForm from './SalesRecordForm';
+import SaleList from './SaleList';
+import SalesByPerson from './SalesByPerson';
+
 
 function App() {
   return (
@@ -27,6 +33,22 @@ function App() {
               <Route path="" element={<ModelList/>}/>
               <Route path="new" element={<AddModelForm/>}/>
             </Route>
+            <Route path="sales-team">
+              <Route path="" element={<SalesPersonForm/>}/>
+            </Route>
+            <Route path="customer">
+              <Route path="" element={<CustomerForm/>}/>
+            </Route>
+            <Route path="sales-record">
+              <Route path="" element={<SalesRecordForm/>}/>
+            </Route>
+            <Route path="sales-list-all">
+              <Route path="" element={<SaleList/>}/>
+            </Route>
+            <Route path="sales-by-person">
+              <Route path="" element={<SalesByPerson/>}/>
+            </Route>
+            
         </Routes>
       </div>
     </BrowserRouter>

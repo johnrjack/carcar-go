@@ -135,3 +135,17 @@ def api_sales_list(request):
             encoder=SaleDetailEncoder,
             safe=False
         )
+
+
+@require_http_methods(["GET", "DELETE"])
+def api_show_sale(request, pk):
+    if request.method == "GET":
+        sale = Sale.objects.get(id=pk)
+        return JsonResponse(
+            sale,
+            encoder=SaleDetailEncoder,
+            safe=False,
+        )
+    else:
+        count, _  = Sale.objects.get(id=pk).delete()
+        return JsonResponse({"deleted": count > 0})
