@@ -21,6 +21,7 @@ function Nav() {
               <NavLink className="nav-link" aria-current="page" to="/customer/">Create Potential Customer</NavLink>
               <NavLink className="nav-link" aria-current="page" to="/sales-record/">Create a Sales Record</NavLink>
               <NavLink className="nav-link" aria-current="page" to="/sales-list-all/">List of All Sales</NavLink>
+              <NavLink className="nav-link" aria-current="page" to="/sales-by-person/">Sale Person History</NavLink>
             </li>
           </ul>
         </div>

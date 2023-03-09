@@ -11,6 +11,7 @@ import SalesPersonForm from './SalesPersonForm';
 import CustomerForm from './CustomerForm';
 import SalesRecordForm from './SalesRecordForm';
 import SaleList from './SaleList';
+import SalesByPerson from './SalesByPerson';
 
 
 function App() {
@@ -43,6 +44,9 @@ function App() {
             </Route>
             <Route path="sales-list-all">
               <Route path="" element={<SaleList/>}/>
+            </Route>
+            <Route path="sales-by-person">
+              <Route path="" element={<SalesByPerson/>}/>
             </Route>
             
         </Routes>
