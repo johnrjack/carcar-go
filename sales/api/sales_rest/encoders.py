@@ -63,18 +63,3 @@ class SaleDetailEncoder(ModelEncoder):
         "sales_person": SalePersonEncoder(),
         "customer": CustomerEncoder(),
     }
-       
-       
-       
-        # Json serializing the unserializable 
-    # def get_extra_data(self, o):
-    #     return {
-    #         "automobile": o.automobile.vin,
-    #         "sales_person": {
-    #             "employee_name": o.sales_person.employee_name,
-    #             "employee_number": o.sales_person.employee_number,
-    #         },
-    #         "customer": o.customer.customer_name,
-    #     }
-
-

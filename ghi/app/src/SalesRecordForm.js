@@ -1,11 +1,25 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { resolvePath } from "react-router-dom";
 
 function SalesRecordForm() {
+   
+    const [sale, setSale] = useState('');
+    const fetchSales = async () => {
+        const saleResponse = await fetch("http://localhost:8090/api/sales/");
+            if (saleResponse.ok) {
+                const data = await saleResponse.json();
+                setSale(data.sales);
+                console.log("Sale", data)
+            }
+    }
+    useEffect(() => {
+        fetchSales();        
+    }, []);
+   
     // Automobile dropdown
     const [autos, setAutomobiles] = useState([]);
     const fetchData = async () => {
-        const automobilesUrl = "http://localhost:8100/api/automobiles/";
+        const automobilesUrl = "http://localhost:8100/api/automobiles/"
         const response = await fetch(automobilesUrl);
 
         if (response.ok) {
@@ -14,6 +28,12 @@ function SalesRecordForm() {
             console.log(data)
         };
     }
+    useEffect(() => {
+        fetchData();     
+    }, []);
+    const filteredAutos = autos && autos.filter(auto => {
+        return sale && !sale.some(sales => sales.automobile === auto.vin);
+    });
 
     // Sales Person Dropdown
     const [employee, setEmployee] = useState([]);
@@ -27,6 +47,9 @@ function SalesRecordForm() {
             console.log(employeeData)
         }
     }
+    useEffect(() => {
+        getData();      
+    }, []);
 
     // Customer Dropdown
     const [customers, setCustomers] = useState([]);
@@ -40,6 +63,11 @@ function SalesRecordForm() {
             console.log(customerData)
         }
     }
+    useEffect(() => {
+        catchData();        
+    }, []);
+
+
     // setting use state
     const [automobile, setAutomobile] = useState('');
     const [salesPerson, setSalesPerson] = useState('');
@@ -77,6 +105,7 @@ function SalesRecordForm() {
         data.customer = customer;
         data.price = price
         console.log("THIS IS DATA", data)
+        
         const saleUrl = "http://localhost:8090/api/sales/";
         const fetchConfig = {
             method: "post",
@@ -91,17 +120,12 @@ function SalesRecordForm() {
             const newSale = await saleResponse.json();
             console.log("THIS IS NEW SALE", newSale)
 
-            setAutomobile("");
+            setAutomobile([]);
             setSalesPerson('');
             setCustomer('');
             setPrice('');
         }
     }
-    useEffect(() => {
-        fetchData();
-        getData();
-        catchData();
-    }, []);
 
 return(
     <div className="row">
@@ -113,11 +137,11 @@ return(
             <div className="mb-3">
                 <select onChange={handleAutoChange} value={automobile} required id="automobile" name="automobile" className="form-select">
                 <option value="">Choose an Automobile</option>
-                {autos.map(autos => {
-                                return (
-                                    <option key={autos.href} value={autos.vin}>{autos.vin}</option>
-                                )
-                            })}
+                {filteredAutos.map(auto => {
+                    return (
+                    <option key={auto.id} value={auto.vin}>{auto.vin}</option>
+                    )
+                    })}
                 </select>
             </div>
             <div className="mb-3">
