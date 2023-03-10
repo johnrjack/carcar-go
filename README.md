@@ -213,17 +213,4 @@ Sale: Creates, shows, and deletes a sale record. Created from an existing vin fr
                         "deleted": true
                     }
 
-Value Objects:
 
-    Sales Person:
-        employee_name - necessary for identifying the sales person, what will be displayed on the UI, used in search functionality of the Sales person history. Foreign key for Sale model 
-
-    Customer:
-        customer_name - necessary for identifying the customer, Foreign key for Sale Model
-
-    AutomobileVO:
-        vin - necessary for identifying the automobile, foreign key fo sale model and displayed on the UI
-        import_href - used as unique identifier on front end 
-
-    Sale:
-        automobile - vin of the automobileVo necessary for sales record form 
