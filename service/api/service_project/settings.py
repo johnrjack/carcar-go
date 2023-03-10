@@ -32,6 +32,7 @@ DEBUG = True
 INSTALLED_APPS = [
     'service_rest.apps.ServiceRestConfig',
     'django.contrib.admin',
+    "corsheaders",
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
