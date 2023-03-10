@@ -8,7 +8,6 @@ Team:
 
 ## How to run: 
     Fork and Clone Repository
-
     Run the following commands in the terminal
 
     docker volume create beta-data
