@@ -94,13 +94,9 @@ def api_sales_list(request):
         )
     else:
         content = json.loads(request.body)
-        print("THIS IS CONTENT -------------", content)
-        print("THIS--------------", AutomobileVO.objects.all()) 
     # automobileVO-----------------------------------------------
         try:
             automobile, _  = AutomobileVO.objects.get_or_create(vin=content["automobile"])
-            # print("THIS IS AUTO VIN-----------", auto_vin)
-            # content["vin"] = auto_vin
         except Exception as e:
             response = JsonResponse(
                 {"message": f"Could not create the sale- {e}"}

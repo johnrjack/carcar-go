@@ -52,8 +52,6 @@ function AddModelForm(){
         const response = await fetch(newModelUrl, fetchConfig);
         if (response.ok){
             const newModel = await response.json();
-            console.log(newModel);
-
             setName('');
             setPicture('');
             setManufacturer('');

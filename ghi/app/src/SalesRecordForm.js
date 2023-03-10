@@ -9,7 +9,6 @@ function SalesRecordForm() {
             if (saleResponse.ok) {
                 const data = await saleResponse.json();
                 setSale(data.sales);
-                console.log("Sale", data)
             }
     }
     useEffect(() => {
@@ -25,7 +24,6 @@ function SalesRecordForm() {
         if (response.ok) {
             const data = await response.json();
             setAutomobiles(data.autos);
-            console.log(data)
         };
     }
     useEffect(() => {
@@ -44,7 +42,6 @@ function SalesRecordForm() {
         if (employeeResponse.ok) {
             const employeeData = await employeeResponse.json();
             setEmployee(employeeData.employee);
-            console.log(employeeData)
         }
     }
     useEffect(() => {
@@ -60,7 +57,6 @@ function SalesRecordForm() {
         if (customerResponse.ok) {
             const customerData = await customerResponse.json();
             setCustomers(customerData.customers)
-            console.log(customerData)
         }
     }
     useEffect(() => {
@@ -104,7 +100,7 @@ function SalesRecordForm() {
         data.sales_person = salesPerson;
         data.customer = customer;
         data.price = price
-        console.log("THIS IS DATA", data)
+        
         
         const saleUrl = "http://localhost:8090/api/sales/";
         const fetchConfig = {
@@ -118,7 +114,7 @@ function SalesRecordForm() {
         const saleResponse = await fetch(saleUrl, fetchConfig);
         if (saleResponse.ok) {
             const newSale = await saleResponse.json();
-            console.log("THIS IS NEW SALE", newSale)
+            
 
             setAutomobile([]);
             setSalesPerson('');

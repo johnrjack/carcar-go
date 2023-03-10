@@ -12,7 +12,7 @@ function SalesByPerson() {
         if (employeeResponse.ok) {
             const employeeData = await employeeResponse.json();
             setEmployee(employeeData.employee);
-            console.log(employeeData)
+            
         }
     }
 

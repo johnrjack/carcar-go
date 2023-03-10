@@ -24,7 +24,6 @@ def get_auto():
             "year": auto["year"],
             "vin": auto["vin"],
         })
-    print(content)
 
 
 def poll():

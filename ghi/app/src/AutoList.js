@@ -9,7 +9,6 @@ function AutoList(){
 
         if (response.ok) {
             const data = await response.json();
-            console.log(data)
             setAutos(data.autos)
         }
     }

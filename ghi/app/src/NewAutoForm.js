@@ -61,7 +61,6 @@ function AddAutoForm(){
       const response = await fetch(AutomobileUrl, fetchConfig);
       if (response.ok) {
         const newAutomobile = await response.json();
-        console.log(newAutomobile);
 
         setColor('');
         setYear('');
