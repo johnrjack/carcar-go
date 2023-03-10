@@ -35,9 +35,10 @@ function Nav() {
             <li className='nav-item dropdown'>
               <a className='nav-link dropdown-toggle' data-bs-toggle="dropdown" aria-haspopup='true' aria-expanded='false'>Service</a>
               <ul className='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li><NavLink className="dropdown-item" aria-current="page" to="/tech-team/">Add a new Technician</NavLink></li>
+                <li><NavLink className="dropdown-item" aria-current="page" to="/appointment-list/">List of Appointments </NavLink></li>
+                <li><NavLink className="dropdown-item" aria-current="page" to="/appointment-form/">Add a new Appointment</NavLink></li>
+                <li><NavLink className="dropdown-item" aria-current="page" to="/service-history/">Service History</NavLink></li>
               </ul>
             </li>
           </ul>
@@ -48,5 +49,3 @@ function Nav() {
 }
 
 export default Nav;
-
-

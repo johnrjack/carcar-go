@@ -7,16 +7,14 @@ from .models import AutomobileVO, Technician,  ServiceAppointment
 # Create your views here.
 
 
-class ServiceAppointmentEncoder(ModelEncoder):
-    model = ServiceAppointment
-    properties = [
-        "vin",
-        "customer",
-        "date",
-        "time",
-        "reason",
-        "technician",
-    ]
+
+class AutomobileVOEncoder(ModelEncoder):
+        model = AutomobileVO
+        properties = [
+            "vin"
+        ]
+
+
 
 class TechnicianEncoder(ModelEncoder):
     model = Technician
@@ -24,6 +22,24 @@ class TechnicianEncoder(ModelEncoder):
         "name",
         "employee_number",
     ]
+
+
+class ServiceAppointmentEncoder(ModelEncoder):
+    model = ServiceAppointment
+    properties = [
+        "vin",
+        "customer",
+        "date",
+        "reason",
+        "vip",
+        "completed",
+        "technician",
+    ]
+    encoders = {
+        "technician": TechnicianEncoder()
+
+    }
+
 
 require_http_methods(["GET", "POST"])
 def technician_list(request):
@@ -44,7 +60,7 @@ def technician_list(request):
             )
         except:
             response = JsonResponse(
-                {"message": "Could not create Customer"}
+                {"message": "Could not create Technician"}
             )
             response.status_code= 400
             return response
@@ -61,31 +77,72 @@ def technicians(request,pk):
         )
     else:
         count, _= Technician.objects.get(id=pk).delete()
-        return JsonResponse({"deleted": count > 0})
+        return JsonResponse({"deleted": count > 0   })
 
+
+@require_http_methods(["GET"])
+def service_history(request, vin):
+    if request.method == "GET":
+        appointment = ServiceAppointment.objects.get(vin=vin)
+        return JsonResponse(
+            appointment,
+            encoder=ServiceAppointmentEncoder,
+            safe=False
+        )
+    else:
+        pass
+
+#needs to turn the VIP bool to true if in inventory
+#needs to list appoitnemts either way
+#create the appointment
 @require_http_methods(["GET","POST"])
 def show_appointments(request):
     if request.method == "GET":
-        appointment = ServiceAppointment.objects.all()
+        appointments = ServiceAppointment.objects.all()
         return JsonResponse(
-            {"appointment": appointment},
+            {"appointment": appointments},
             encoder=ServiceAppointmentEncoder,
             safe=False,
         )
     else:
-        # content = json.loads(request.body)
-        # try:
-        pass
+        try:
+            content = json.loads(request.body)
+            #get the technician data
+            try:
+                technician = Technician.objects.get(name=content['technician'])
+                content['technician'] = technician
+            except Technician.DoesNotExist as g:
+                return JsonResponse(
+                    {"Error": f"Invalid technician {g}"}, status=400
+                )
+            #turn vip to true if in inventory
 
-@require_http_methods(["GET", "DELETE"])
-def show_service_history(request, pk):
-    if request.method == "GET":
-        service = ServiceAppointment.objects.get(id=pk)
+            if AutomobileVO.objects.filter(vin=content["vin"]).exists():
+                content["vip"] = True
+            appointment = ServiceAppointment.objects.create(**content)
+            return JsonResponse(
+                    appointment,
+                    encoder=ServiceAppointmentEncoder,
+                    safe=False,
+                    )
+        except:
+            return JsonResponse(
+                {"Error": "Cannot create appoitnment"}, status=400
+            )
+
+@require_http_methods(["PUT", "DELETE"])
+def cancel_appointment(request, pk):
+    try:
+        serviceAppointment = ServiceAppointment.objects.get(pk=pk)
+    except ServiceAppointment.DoesNotExist:
+        return JsonResponse({"error":"Appoitment not found"}, status=400)
+    if request.method == "PUT":
+        serviceAppointment.cancelled = True
+        serviceAppointment.save()
         return JsonResponse(
-            service,
-            encoder=ServiceAppointmentEncoder,
-            safe=False,
+        {"Alert": "Appoitment cancelled."}, status=200
         )
     else:
-        count, _  = ServiceAppointment.objects.get(id=pk).delete()
-        return JsonResponse({"deleted": count > 0})
+        pass
+        # count, _  = ServiceAppointment.objects.get(id=pk).delete()
+        # return JsonResponse({"deleted": count > 0})

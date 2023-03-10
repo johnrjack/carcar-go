@@ -23,11 +23,15 @@ class Technician(models.Model):
 class ServiceAppointment(models.Model):
     vin = models.CharField(max_length=18)
     customer = models.CharField(max_length=100)
-    date = models.DateField()
-    time = models.TimeField()
+    date = models.DateTimeField()
     reason = models.CharField(max_length=300)
+    vip = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
+    cancelled = models.BooleanField(default=False)
     technician = models.ForeignKey(
         Technician,
         related_name="techician",
         on_delete=models.PROTECT,
     )
+    def __str__(self):
+        return self.customer
