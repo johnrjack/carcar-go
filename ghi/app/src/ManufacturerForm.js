@@ -3,16 +3,7 @@ import React, {useState} from "react";
 function ManufacturerForm() {
     const [name, setName] = useState('');
 
-    const fetchData = async () => {
-        const listUrl = "http://localhost:8100/api/manufacturers/";
-        const response = await fetch(listUrl);
 
-        if (response.ok) {
-            const data = await response.json();
-            setName(data.name)
-        }
-        
-    }
     const handleNameChange = (event) => {
         const value = (event.target.value);
         setName(value);

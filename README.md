@@ -7,8 +7,11 @@ Team:
 
 
 How to run: 
+
     docker volume create beta-data
+
     docker-compose build
+    
     docker-compose up
 
 ## Design
@@ -49,6 +52,7 @@ Port 8100: For accessing Inventory Api
 
 CRUD:
 Sales Person: Creates, shows and deletes a sales person comprised of an employee name and employee number (integer field max length 6)
+
         POST:  http://localhost:8090/api/employees/
         Sample Input:{
 	                    "employee_name": "John Employee",
@@ -84,6 +88,7 @@ Sales Person: Creates, shows and deletes a sales person comprised of an employee
                         }
 
 Customer: Creates, shows and deletes a new potential customer comprised of the customers name, address and phone number(integer field max 10 characters)
+
     POST: http://localhost:8090/api/customers/
     Sample Input:{
                     "customer_name": "John Customer",
@@ -123,6 +128,7 @@ Customer: Creates, shows and deletes a new potential customer comprised of the c
                 }
 
 Sale: Creates, shows, and deletes a sale record. Created from an existing vin from inventory, an existing employees name, an existing customers name, and the sale price.
+
     POST: http://localhost:8090/api/sales/
     Sample Input:{
                     "automobile": "12345678901234567",
@@ -198,12 +204,16 @@ Sale: Creates, shows, and deletes a sale record. Created from an existing vin fr
                     }
 
 Value Objects:
+
     Sales Person:
         employee_name - necessary for identifying the sales person, what will be displayed on the UI, used in search functionality of the Sales person history. Foreign key for Sale model 
+
     Customer:
         customer_name - necessary for identifying the customer, Foreign key for Sale Model
+
     AutomobileVO:
         vin - necessary for identifying the automobile, foreign key fo sale model and displayed on the UI
         import_href - used as unique identifier on front end 
+
     Sale:
         automobile - vin of the automobileVo necessary for sales record form 

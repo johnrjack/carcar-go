@@ -4,16 +4,6 @@ function SalesPersonForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  // const fetchData = async () => {
-  //   const listUrl ="http://localhost:8090/api/employees/";
-  //   const response = await fetch(listUrl);
-
-  //   if (response.ok) {
-  //     const data = await response.json();
-
-  //   }
-  // }
-
   const handleNameChange = (event) =>{
     const value = (event.target.value);
     setName(value)
