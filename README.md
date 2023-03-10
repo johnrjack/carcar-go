@@ -6,14 +6,16 @@ Team:
 * Rodrigo Olmos - Service 
 
 
-How to run: 
-    1. Fork and Clone Repository
+## How to run: 
+    Fork and Clone Repository
 
-    2. Run  docker volume create beta-data
+    Run the following commands in the terminal
 
-    3. Run docker-compose build
+    docker volume create beta-data
+
+    docker-compose build
     
-    4. Run docker-compose up
+    docker-compose up
 
 ## Inventory microservice
 The inventory microservice is a tool that can be used to create and keep track of automobiles at a car dealership, that then distributes its data to other microservices; the service microservice, and sales microservice. The built in services of the Inventory allow the user to create a manufacture, create a model with a picture url field, and finally create an automobile with a unique VIN to identify it.
