@@ -14,7 +14,8 @@ How to run:
     
     docker-compose up
 
-## Design
+## Inventory microservice
+The inventory microservice is a tool that can be used to create and keep track of automobiles at a car dealership, that then distributes its data to other microservices; the service microservice, and sales microservice. The built in services of the Inventory allow the user to create a manufacture, create a model with a picture url field, and finally create an automobile with a unique VIN to identify it.
 
 ## Service microservice
 
@@ -22,30 +23,34 @@ Explain your models and integration with the inventory
 microservice, here.
 
 ## Sales microservice
+The sales microservice is a tool that can be used to track important information for a car dealership regarding the sales team and sales of the automobiles. It pulls data from the inventory microservice to assign an automobile and its details to a sale. Built in services include: a create sales team member form, a create customer form, a list view of all sales made, a list view of sales filtered by the sales team member that made  the sale, and a create sales record form that filters out the already sold automobiles as to not sell the same automobile twice. 
 
-How to run: 
-    docker volume create beta-data
-    docker-compose build
-    docker-compose up
 
 Ports and URLs to access the browser
 Port 3000: For Browser access
+
     Inventory:
+
         Manufacturer:
+
             Form: http://localhost:3000/manufacturer/new
             List: http://localhost:3000/manufacturer/
+
         Vehicle Models:
             Form: http://localhost:3000/models/new
             List: http://localhost:3000/models/
+
         Automobile:
             Form:http://localhost:3000/automobiles/new
             List:http://localhost:3000/automobiles/
+
     Sales:
         Sales Person Form: http://localhost:3000/sales-team/
         Customer Form: http://localhost:3000/customer/
         Sale Record Form: http://localhost:3000/sales-record/
         List of All Sales: http://localhost:3000/sales-list-all/
         Sales Person History: http://localhost:3000/sales-by-person/
+
 Port 8090: For accessing Sales api's URL's in CRUD section below
 Port 8100: For accessing Inventory Api
 
