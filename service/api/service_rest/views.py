@@ -11,7 +11,8 @@ from .models import AutomobileVO, Technician,  ServiceAppointment
 class AutomobileVOEncoder(ModelEncoder):
         model = AutomobileVO
         properties = [
-            "vin"
+            "vin",
+
         ]
 
 
@@ -27,6 +28,7 @@ class TechnicianEncoder(ModelEncoder):
 class ServiceAppointmentEncoder(ModelEncoder):
     model = ServiceAppointment
     properties = [
+        "id",
         "vin",
         "customer",
         "date",

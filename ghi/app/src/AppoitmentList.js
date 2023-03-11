@@ -13,37 +13,47 @@ function AppointmentList(){
         if (response.ok) {
             const appt = await response.json();
             const filteredAppointments = appt.appointment.filter(
-                (appointment) => !appointment.completed && !appointment.cancelled
+                (appointment) => !appointment.completed || !appointment.cancelled
               );
             setAppoitment(filteredAppointments);
         }
     };
-    const handleComplete = (id) => {
-        const completedAppointments = appointments.map((appointment) => {
-            if (appointment.id === id) {
-              return { ...appointment, completed: true };
-            } else {
-              return appointment;
-            }
-          });
-          setAppoitment(completedAppointments);
-        };
+// not filtering the fetch data, still returning completed or cancelled
 
-        const handleCancelled = async (id) => {
-            const response = await fetch(`http://localhost:8080/api/appointments/${id}/`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({ cancelled: true }),
+    const handleComplete = async (id) => {
+        const response = await fetch(`http://localhost:8080/api/appointments/${id}/`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ completed: true }),
+        });
+        if (response.ok) {
+          const appt = await response.json();
+          const filteredAppointments = appt.appointments.filter(
+            (appointment) => !appointment.completed && !appointment.cancelled
+          );
+          setAppoitment(filteredAppointments);
+        }
+      };
+// still not working
+// );
+
+    const handleCancelled = async (id) => {
+    const response = await fetch(`http://localhost:8080/api/appointments/${id}/`, {
+    method: "PUT",
+    headers: {
+    "Content-Type": "application/json"
+            },
+    body: JSON.stringify({ cancelled: true }),
             });
-            if (response.ok) {
-              const cancelledAppointment = appointments.find((appointment) => appointment.id === id);
-              const updatedAppointments = appointments.filter((appointment) => appointment.id !== id);
-              cancelledAppointment.cancelled = true;
-              setAppoitment([...updatedAppointments, cancelledAppointment]);
+    if (response.ok) {
+    const cancelledAppointment = appointments.find((appointment) => appointment.id === id);
+    const updatedAppointments = appointments.filter((appointment) => appointment.id !== id);
+    cancelledAppointment.cancelled = true;
+    setAppoitment([...updatedAppointments, cancelledAppointment]);
             }
-          };
+      };
 
 
     useEffect(() =>{
@@ -83,7 +93,7 @@ return(
                     <td>{appointment.completed ? "Completed" : "In Progress"}</td>
                     <td>{appointment.technician.name}</td>
                     <td>
-                        <button type="button" className="btn btn-success" onClick={() => handleComplete(index)}>Complete</button>
+                        <button type="button" className="btn btn-success" onClick={() => handleComplete(appointment.id)}>Complete</button>
                     </td>
                     <td>
                         <button type="button" className="btn btn-danger" onClick={() => handleCancelled(appointment.id)}>Cancel</button>
