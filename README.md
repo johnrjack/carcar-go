@@ -7,7 +7,7 @@ Team:
 
 ## Design
 
-![]
+![Alt text](project-beta-diagram.png)
 
 ## How to run: 
 Fork and Clone Repository
