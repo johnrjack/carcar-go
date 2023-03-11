@@ -7,7 +7,7 @@ Team:
 
 ## Design
 
-<img width="154" src="file:///C:/Users/rodri/Videos/Hack%20Reactor/Mod%202/Diagram%20for%20Project%20Beta.png">
+<img width="154" src="https://excalidraw.com/#room=6b2d8094e78bb7809f6d,vfKc9WNgbs9zfDOhEZFlyw">
 
 ## How to run: 
 Fork and Clone Repository
