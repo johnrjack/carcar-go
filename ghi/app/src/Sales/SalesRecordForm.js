@@ -1,8 +1,9 @@
-import React, {useState, useEffect, useRef} from "react";
-import { resolvePath } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 
 function SalesRecordForm() {
-   
+    
+    const navigate = useNavigate();
     const [sale, setSale] = useState('');
     const fetchSales = async () => {
         const saleResponse = await fetch("http://localhost:8090/api/sales/");
@@ -14,7 +15,6 @@ function SalesRecordForm() {
     useEffect(() => {
         fetchSales();        
     }, []);
-   
     // Automobile dropdown
     const [autos, setAutomobiles] = useState([]);
     const fetchData = async () => {
@@ -120,6 +120,7 @@ function SalesRecordForm() {
             setSalesPerson('');
             setCustomer('');
             setPrice('');
+            navigate('/sales-list-all')
         }
     }
 

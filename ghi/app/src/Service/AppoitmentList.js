@@ -5,17 +5,17 @@ import { NavLink } from "react-router-dom";
 
 
 function AppointmentList(){
-    const [appointments, setAppoitment] = useState([]);
+    const [appointments, setAppointment] = useState([]);
     const fetchData = async () => {
-        const AppoitnmentUrl = "http://localhost:8080/api/appointments/";
-        const response = await fetch(AppoitnmentUrl);
+        const AppointmentUrl = "http://localhost:8080/api/appointments/";
+        const response = await fetch(AppointmentUrl);
 
         if (response.ok) {
             const appt = await response.json();
             const filteredAppointments = appt.appointment.filter(
                 (appointment) => !appointment.completed || !appointment.cancelled
               );
-            setAppoitment(filteredAppointments);
+            setAppointment(filteredAppointments);
         }
     };
 // not filtering the fetch data, still returning completed or cancelled
@@ -33,7 +33,7 @@ function AppointmentList(){
           const filteredAppointments = appt.appointments.filter(
             (appointment) => !appointment.completed && !appointment.cancelled
           );
-          setAppoitment(filteredAppointments);
+          setAppointment(filteredAppointments);
         }
       };
 // still not working
@@ -51,9 +51,9 @@ function AppointmentList(){
     const cancelledAppointment = appointments.find((appointment) => appointment.id === id);
     const updatedAppointments = appointments.filter((appointment) => appointment.id !== id);
     cancelledAppointment.cancelled = true;
-    setAppoitment([...updatedAppointments, cancelledAppointment]);
+    setAppointment([...updatedAppointments, cancelledAppointment]);
             }
-      };
+    };
 
 
     useEffect(() =>{

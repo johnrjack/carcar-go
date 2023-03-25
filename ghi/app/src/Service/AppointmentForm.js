@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 
 function AddAppointmentForm(){
-    const [appointment, setAppoitment] = useState([]);
+    const [appointment, setAppointment] = useState([]);
 
     const fetchData = async () => {
         const formUrl = `http://localhost:8080/api/appointments/`;
@@ -9,7 +9,7 @@ function AddAppointmentForm(){
 
         if (response.ok) {
             const data = await response.json();
-            setAppoitment(data.appointment)
+            setAppointment(data.appointment)
         }
     }
 

@@ -1,21 +1,21 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MainPage from './MainPage';
 import Nav from './Nav';
-import AutoList from './AutoList'
-import AddAutoForm from './NewAutoForm';
-import ManufacturerList from './ManufacturerList';
-import ManufacturerForm from './ManufacturerForm';
-import ModelList from './ModelList';
-import AddModelForm from './ModelForm';
-import SalesPersonForm from './SalesPersonForm';
-import CustomerForm from './CustomerForm';
-import SalesRecordForm from './SalesRecordForm';
-import SaleList from './SaleList';
-import SalesByPerson from './SalesByPerson';
-import AddTechnicianForm from './TechnicianForm';
-import AppointmentList from './AppoitmentList';
-import AddAppointmentForm from './AppointmentForm';
-import ServiceHistory from './ServiceHistory'
+import AutoList from './Inventory/AutoList'
+import AddAutoForm from './Inventory/NewAutoForm';
+import ManufacturerList from './Inventory/ManufacturerList';
+import ManufacturerForm from './Inventory/ManufacturerForm';
+import ModelList from './Inventory/ModelList';
+import AddModelForm from './Inventory/ModelForm';
+import SalesPersonForm from './Sales/SalesPersonForm';
+import CustomerForm from './Service/CustomerForm';
+import SalesRecordForm from './Sales/SalesRecordForm';
+import SaleList from './Sales/SaleList';
+import SalesByPerson from './Sales/SalesByPerson';
+import AddTechnicianForm from './Service/TechnicianForm';
+import AppointmentList from './Service/AppoitmentList';
+import AddAppointmentForm from './Service/AppointmentForm';
+import ServiceHistory from './Service/ServiceHistory'
 
 function App() {
   return (

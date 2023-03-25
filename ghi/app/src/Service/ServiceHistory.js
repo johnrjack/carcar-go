@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 
 function ServiceHistory(){
     const [vin, setVin] = useState('');
-    const [appointments, setAppoitment] = useState([]);
+    const [appointments, setAppointment] = useState([]);
 
     const handleVinChange = (event) => {
         fetchData(event.target.value)
@@ -15,13 +15,13 @@ function ServiceHistory(){
 
 
     const fetchData = async (vin) => {
-        const AppoitnmentUrl = "http://localhost:8080/api/appointments/";
-        const response = await fetch(AppoitnmentUrl);
+        const AppointmentUrl = "http://localhost:8080/api/appointments/";
+        const response = await fetch(AppointmentUrl);
 
         if (response.ok) {
             const data = await response.json();
-            const filtered = data.appointment.filter(apppointment => apppointment.vin === vin)
-            setAppoitment(filtered)
+            const filtered = data.appointment.filter(appointment => appointment.vin === vin)
+            setAppointment(filtered)
         }
 }
 
@@ -47,14 +47,14 @@ return(
         </tr>
         </thead>
         <tbody>
-            {appointments.map((filteredappointment, index) => {
+            {appointments.map((filteredAppointments, index) => {
                 return (
                 <tr key={ index }>
-                    <td>{filteredappointment.vin}</td>
-                    <td>{filteredappointment.customer}</td>
-                    <td>{ filteredappointment.date}</td>
-                    <td>{filteredappointment.reason}</td>
-                    <td>{filteredappointment.technician.name}</td>
+                    <td>{filteredAppointments.vin}</td>
+                    <td>{filteredAppointments.customer}</td>
+                    <td>{ filteredAppointments.date}</td>
+                    <td>{filteredAppointments.reason}</td>
+                    <td>{filteredAppointments.technician.name}</td>
 
                 </tr>
                 );
