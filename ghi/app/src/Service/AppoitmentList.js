@@ -1,113 +1,100 @@
-import React, {useEffect, useState} from "react";
-import { NavLink } from "react-router-dom";
+import React, {useState, useEffect} from 'react';
+import { Link } from "react-router-dom";
 
+function AppointmentList( ){
 
-
-
-function AppointmentList(){
-    const [appointments, setAppointment] = useState([]);
-    const fetchData = async () => {
-        const AppointmentUrl = "http://localhost:8080/api/appointments/";
-        const response = await fetch(AppointmentUrl);
-
-        if (response.ok) {
-            const appt = await response.json();
-            const filteredAppointments = appt.appointment.filter(
-                (appointment) => !appointment.completed || !appointment.cancelled
-              );
-            setAppointment(filteredAppointments);
+    // fetch appointments & only show if property finished =false
+    const[appointments, setAppointments] = useState([]);
+    const fetchAppointments = async () => {
+        const response = await fetch('http://localhost:8080/api/appointments/');
+        const data = await response.json();
+        if (response.ok){
+            const finishedAppointments = data.appointments.filter((appointment) => !appointment.finished);
+            setAppointments(finishedAppointments);
         }
     };
-// not filtering the fetch data, still returning completed or cancelled
 
-    const handleComplete = async (id) => {
-        const response = await fetch(`http://localhost:8080/api/appointments/${id}/`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ completed: true }),
-        });
-        if (response.ok) {
-          const appt = await response.json();
-          const filteredAppointments = appt.appointments.filter(
-            (appointment) => !appointment.completed && !appointment.cancelled
-          );
-          setAppointment(filteredAppointments);
-        }
-      };
-// still not working
-// );
-
-    const handleCancelled = async (id) => {
-    const response = await fetch(`http://localhost:8080/api/appointments/${id}/`, {
-    method: "PUT",
-    headers: {
-    "Content-Type": "application/json"
-            },
-    body: JSON.stringify({ cancelled: true }),
-            });
-    if (response.ok) {
-    const cancelledAppointment = appointments.find((appointment) => appointment.id === id);
-    const updatedAppointments = appointments.filter((appointment) => appointment.id !== id);
-    cancelledAppointment.cancelled = true;
-    setAppointment([...updatedAppointments, cancelledAppointment]);
-            }
-    };
-
-
-    useEffect(() =>{
-        fetchData()
+    useEffect(() => {
+        fetchAppointments();
     }, []);
 
-return(
-    <>
-    <h1>Appointments</h1>
-    <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-            <NavLink to="/appointment-form/" className="btn btn-primary btn-lg px-4 gap-3">Add a New Appointment </NavLink>
+    //delete
+    const deleteAppointment = async (event) => {
+        const appointmentsUrl = `http://localhost:8080/api/appointment/${event.id}/`
+        const fetchConfig = { method: "DELETE"};
+
+        const response = await fetch(appointmentsUrl, fetchConfig)
+        if (response.ok){
+            fetchAppointments()
+        }
+    }
+
+    //continuously update the appointments that are finished
+    const handleFinished = async (event) =>{
+        const data = {}
+        data["finished"] = true
+        const finishedUrl = `http://localhost:8080/api/appointment/${event.id}/`
+        const response = await fetch(finishedUrl);
+        const fetchConfig = {
+            method: "PUT",
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        await fetch(finishedUrl, fetchConfig);
+        await fetchAppointments();
+    }
+
+    useEffect(() => {
+        fetchAppointments();
+    }, []);
+
+    return (
+        <div className="my-5 container">
+            <h1 className="text-dark fw-bold text-center my-3">Service Appointments</h1>
+            <h5
+                className="text-center my-3">
+                Your appointment will show up here once you make one!
+                <br />
+                <br />
+            </h5>
+            <table className="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Vin</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Reason</th>
+                        <th>Technician</th>
+                        <th>VIP</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {appointments.map((appointment, id) => {
+                    return(
+                        <tr key={id}>
+                            <td>{ appointment.vin }</td>
+                            <td>{ appointment.customer_name }</td>
+                            <td>{ new Date (appointment.date).toLocaleDateString() }</td>
+                            <td>{ new Date(appointment.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }</td>
+                            <td>{ appointment.reason }</td>
+                            <td>{ appointment.technician.name }</td>
+                            <td>{appointment.vip ? "Yes" : "No" } </td>
+                            <td>
+                                <button type="button" onClick={() => handleFinished(appointment)} className="btn btn-success">Finished</button>
+                                <p> </p>
+                                <button className='btn btn-danger' onClick={() => deleteAppointment(appointment)} type="button">Cancel</button>
+                            </td>
+                        </tr>
+                    );
+                })}
+                </tbody>
+            </table>
         </div>
-    <table className="table table-striped">
-        <thead>
-        <tr>
-            <th>VIP Status</th>
-            <th>VIN</th>
-            <th>Customer</th>
-            <th>Date  Time</th>
-            <th>Reason</th>
-            <th>Progress</th>
-            <th>Assigned Technician</th>
-            <th>Complete</th>
-            <th>Cancelled</th>
-
-        </tr>
-        </thead>
-        <tbody>
-            {appointments.filter((appointment) => !appointment.cancelled).map((appointment, index) => {
-                return (
-                <tr key={ appointment.id }>
-                      <td>{appointment.vip ? "VIP" : "Basic"}</td>
-                    <td>{appointment.vin}</td>
-                    <td>{appointment.customer}</td>
-                    <td>{appointment.date}</td>
-                    <td>{appointment.reason}</td>
-                    <td>{appointment.completed ? "Completed" : "In Progress"}</td>
-                    <td>{appointment.technician.name}</td>
-                    <td>
-                        <button type="button" className="btn btn-success" onClick={() => handleComplete(appointment.id)}>Complete</button>
-                    </td>
-                    <td>
-                        <button type="button" className="btn btn-danger" onClick={() => handleCancelled(appointment.id)}>Cancel</button>
-                    </td>
-
-                </tr>
-                );
-            })}
-
-        </tbody>
-        </table>
-
-    </>
-);
+    );
 }
 
 export default AppointmentList;
+

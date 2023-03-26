@@ -1,11 +1,20 @@
 from django.urls import path
-from .views import technician_list, technicians, show_appointments, cancel_appointment
+from .views import (
+    list_technicians,
+    show_technician,
+    list_appointments,
+    show_appointment,
+)
 
+urlpatterns= [
+    # technician paths
+    path("technicians/", list_technicians, name="list_technician"),
+    path("technicians/", list_technicians, name="create_technician"),
+    path("technician/<int:id>/",show_technician, name="show_technician"),
 
-urlpatterns = [
-    path("technicians/", technician_list, name="create_technician"),
-    path("technicians/<int:pk>",technicians, name=""),
-    path("appointments/", show_appointments, name="create_appointments"),
-    # path("appointments/<int:vin>/", service_history, name="service_history"),
-    path("appointments/<int:pk>/", cancel_appointment, name="cancel-appointment")
+    # appointment paths
+    path("appointments/", list_appointments, name="list_appointments"),
+    path("appointments/", list_appointments, name="create_appointment"),
+    path("appointment/<int:id>/", show_appointment, name="show_appointment"),
 ]
+

@@ -1,150 +1,144 @@
-from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.decorators.http import    require_http_methods
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 import json
 from common.json import ModelEncoder
-from .models import AutomobileVO, Technician,  ServiceAppointment
-# Create your views here.
+
+from .models import Technician, Appointment, AutomobileVO
 
 
-
-class AutomobileVOEncoder(ModelEncoder):
-        model = AutomobileVO
-        properties = [
-            "vin",
-
-        ]
-
-
+class AutomobileVODetailEncoder(ModelEncoder):
+    model: AutomobileVO
+    properities = [
+        "vin",
+        "id",
+    ]
 
 class TechnicianEncoder(ModelEncoder):
     model = Technician
     properties = [
         "name",
         "employee_number",
+        "id",
     ]
 
-
-class ServiceAppointmentEncoder(ModelEncoder):
-    model = ServiceAppointment
+class AppointmentEncoder(ModelEncoder):
+    model = Appointment
     properties = [
-        "id",
         "vin",
-        "customer",
+        "customer_name",
         "date",
         "reason",
         "vip",
-        "completed",
         "technician",
+        "finished",
+        "id"
     ]
     encoders = {
-        "technician": TechnicianEncoder()
-
+        "technician": TechnicianEncoder(),
     }
 
-
-require_http_methods(["GET", "POST"])
-def technician_list(request):
+# LIST OF TECHS AND CREATING A TECH.............................................
+@require_http_methods(["GET", "POST"])
+def list_technicians(request):
     if request.method == "GET":
-        technician = Technician.objects.all()
+        technicians = Technician.objects.all()
         return JsonResponse(
-            {"technician": technician},
-            encoder=TechnicianEncoder
+            {"technicians": technicians},
+            encoder=TechnicianEncoder,
         )
     else:
-        try:
-            content = json.loads(request.body)
-            technician = Technician.objects.create(**content)
-            return JsonResponse(
-                technician,
-                encoder=TechnicianEncoder,
-                safe=False,
-            )
-        except:
-            response = JsonResponse(
-                {"message": "Could not create Technician"}
-            )
-            response.status_code= 400
-            return response
+        content = json.loads(request.body)
+        technicians = Technician.objects.create(**content)
+        return JsonResponse(
+            technicians,
+            encoder=TechnicianEncoder,
+            safe=False,
+        )
 
-
-@require_http_methods(["GET", "DELETE"])
-def technicians(request,pk):
+# Show details of a technician, delete a technician, update a technician...................
+@require_http_methods(["GET", "DELETE", "PUT"])
+def show_technician(request, id):
     if request.method == "GET":
-        technician = Technician.objects.get(id=pk)
+        technician = Technician.objects.get(id=id)
         return JsonResponse(
             technician,
             encoder=TechnicianEncoder,
-            safe=False
-        )
-    else:
-        count, _= Technician.objects.get(id=pk).delete()
-        return JsonResponse({"deleted": count > 0   })
-
-
-@require_http_methods(["GET"])
-def service_history(request, vin):
-    if request.method == "GET":
-        appointment = ServiceAppointment.objects.get(vin=vin)
-        return JsonResponse(
-            appointment,
-            encoder=ServiceAppointmentEncoder,
-            safe=False
-        )
-    else:
-        pass
-
-#needs to turn the VIP bool to true if in inventory
-#needs to list appoitnemts either way
-#create the appointment
-@require_http_methods(["GET","POST"])
-def show_appointments(request):
-    if request.method == "GET":
-        appointments = ServiceAppointment.objects.all()
-        return JsonResponse(
-            {"appointment": appointments},
-            encoder=ServiceAppointmentEncoder,
             safe=False,
         )
-    else:
-        try:
-            content = json.loads(request.body)
-            #get the technician data
-            try:
-                technician = Technician.objects.get(name=content['technician'])
-                content['technician'] = technician
-            except Technician.DoesNotExist as g:
-                return JsonResponse(
-                    {"Error": f"Invalid technician {g}"}, status=400
-                )
-            #turn vip to true if in inventory
-
-            if AutomobileVO.objects.filter(vin=content["vin"]).exists():
-                content["vip"] = True
-            appointment = ServiceAppointment.objects.create(**content)
-            return JsonResponse(
-                    appointment,
-                    encoder=ServiceAppointmentEncoder,
-                    safe=False,
-                    )
-        except:
-            return JsonResponse(
-                {"Error": "Cannot create appoitnment"}, status=400
-            )
-
-@require_http_methods(["PUT", "DELETE"])
-def cancel_appointment(request, pk):
-    try:
-        serviceAppointment = ServiceAppointment.objects.get(pk=pk)
-    except ServiceAppointment.DoesNotExist:
-        return JsonResponse({"error":"Appoitment not found"}, status=400)
-    if request.method == "PUT":
-        serviceAppointment.cancelled = True
-        serviceAppointment.save()
+    elif request.method == "DELETE":
+        count, _ = Technician.objects.filter(id=id).delete()
         return JsonResponse(
-        {"Alert": "Appoitment cancelled."}, status=200
+            {"deleted": count > 0}
         )
     else:
-        pass
-        # count, _  = ServiceAppointment.objects.get(id=pk).delete()
-        # return JsonResponse({"deleted": count > 0})
+        content = json.loads(request.body)
+        Technician.objects.filter(id=id).update(**content)
+        technician = Technician.objects.get(id=id)
+        return JsonResponse(
+            technician,
+            encoder=TechnicianEncoder,
+            safe=False,
+        )
+
+# getting list of appointments and creating an appointment................................
+@require_http_methods(["GET", "POST"])
+def list_appointments(request):
+    if request.method == "GET":
+        appointments = Appointment.objects.all()
+        return JsonResponse(
+            {"appointments": appointments},
+            encoder=AppointmentEncoder,
+        )
+
+    # POST
+    else:
+        content=json.loads(request.body)
+
+        try:
+            technician = Technician.objects.get(id=content["technician"])
+            content["technician"] = technician
+
+        except Technician.DoesNotExist:
+            return JsonResponse(
+                {"message": "Invalid technician id"},
+                status=400
+            )
+        try:
+            if AutomobileVO.objects.get(vin=content["vin"]):
+                content["vip"] = True
+        except AutomobileVO.DoesNotExist:
+            content["vip"] = False
+        appointment = Appointment.objects.create(**content)
+        return JsonResponse(
+            appointment,
+            encoder=AppointmentEncoder,
+            safe=False,
+        )
+
+# Show details of an appointment, delete an appointment, update an appointment
+@require_http_methods(["GET", "DELETE", "PUT"])
+def show_appointment(request, id):
+    if request.method == "GET":
+        appointment = Appointment.objects.get(id=id)
+        return JsonResponse(
+            appointment,
+            encoder=AppointmentEncoder,
+            safe=False,
+        )
+    elif request.method == "DELETE":
+        count, _ = Appointment.objects.filter(id=id).delete()
+        return JsonResponse(
+            {"deleted": count > 0}
+        )
+
+    # UPDATING AN APPOINTMENT
+    else:
+        content = json.loads(request.body)
+        Appointment.objects.filter(id=id).update(**content)
+        appointment = Appointment.objects.get(id=id)
+        return JsonResponse(
+            appointment,
+            encoder=AppointmentEncoder,
+            safe=False,
+        )
